@@ -11,8 +11,13 @@ import UIKit
 class TodoListViewController: UITableViewController {
 
     var arrayItem = ["Find Mako", "Ride Jaeger", "Kill Kaiju","The End!"]
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let items = defaults.array(forKey: "TodoListArray") as? [String]{
+            arrayItem = items
+        }
         
     }
     //MARK - TableView Datasource Methods
@@ -47,12 +52,12 @@ class TodoListViewController: UITableViewController {
             //what will happen if the user click the button
 //            print(textField.text)
             self.arrayItem.append(textField.text!)
+            self.defaults.set(self.arrayItem, forKey: "TodoListArray")
             self.tableView.reloadData()
         }
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Create New Item"
             textField = alertTextField
-            print(alertTextField.text)
         }
         
         alert.addAction(action)
